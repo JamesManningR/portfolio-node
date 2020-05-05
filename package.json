@@ -1,0 +1,28 @@
+{
+  "name": "portfolio-api",
+  "version": "1.0.0",
+  "description": "The backend code for the my portfolio website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JamesManningR/portfolio-node.git"
+  },
+  "keywords": [
+    "node",
+    "npm",
+    "express"
+  ],
+  "author": "Jakub Menski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JamesManningR/portfolio-node/issues"
+  },
+  "homepage": "https://github.com/JamesManningR/portfolio-node#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.9.12"
+  }
+}
