@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const Media = require('../models/media');
+
 
 const projectSchema = new mongoose.Schema({
   title: { type: String, required: true },

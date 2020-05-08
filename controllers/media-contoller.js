@@ -1,4 +1,5 @@
 const Media = require('../models/media');
+const HttpError = require('../models/http-error');
 
 // Create
 const createMedia = async (req, res, next) =>{
