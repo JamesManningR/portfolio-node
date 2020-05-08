@@ -1,5 +1,5 @@
-const Project = require('../models/project');
-const HttpError = require('../models/http-error');
+const Project = require('../models/project'),
+      HttpError = require('../models/http-error')
 
 // Create
 const createProject = async (req, res, next) => {
@@ -19,16 +19,19 @@ const createProject = async (req, res, next) => {
 const getProjects = async (req, res, next) =>{
   let projects
   try{
-    projects = await Project.find().exec()
+    projects = await Project.find()
+      .populate('featuredImage')
+      .populate('images')
+      .exec()
   } catch(err){
-    console.log("Error getting projects: ", err);
+    console.log("Error getting projects: ", err)
     const error = new HttpError(
       'We were unable to gather projects.', 500
     );
     return next(error)
   }
   if (!projects){
-    throw new HttpError('No projects found', 404);
+    throw new HttpError('No projects found', 404)
   }
   res.json(projects)
 }
@@ -44,7 +47,7 @@ const getProject = async (req, res, next) =>{
       .exec()
   } catch (err) {
     // If there was an error
-    console.log("Error getting project: ", err);
+    console.log("Error getting project: ", err)
     const error = new HttpError(
       'We were unable to find this project.', 500
     );
@@ -52,7 +55,7 @@ const getProject = async (req, res, next) =>{
   }
   // If there was no project found
   if (!project){
-    throw new HttpError(`Could not find project with Id ${projectId}`, 404);
+    throw new HttpError(`Could not find project with Id ${projectId}`, 404)
   }
   res.json(project)
 }
