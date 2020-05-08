@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Project = require('./models/project')
+const Project = require('../models/project')
 
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => {
@@ -9,6 +9,8 @@ mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopol
   console.log(`Connection failed: ${err}`)
 });
 
+// ============= Projects
+// Create
 const createProject = async (req, res, next) => {
   console.log(req.body)
   const createdProject = new Project({
@@ -18,11 +20,24 @@ const createProject = async (req, res, next) => {
     images: req.body.images,
     skills: req.body.skills
   });
-  const result = await createdProject.save();
-  res.json(result);
-  return
+  const result = await createdProject.save()
+  res.json(result)
 }
 
+// READ
+// All projects
+const getProjects = async (req, res, next) =>{
+  const projects = await Project.find().exec()
+  res.json(projects)
+}
+// Single project
+const getProject = async (req, res, next) =>{
+  const projectId = req.body.projectId
+  const project = await Project.findById(projectId).exec()
+  res.json(projects)
+}
+
+// ============= Media
 const createMedia = async (req, res, next) =>{
   console.log(req.body)
   const createdMedia = new Media({
@@ -31,4 +46,9 @@ const createMedia = async (req, res, next) =>{
   })
 }
 
-exports.createProject = createProject;
+module.exports = {
+  createProject,
+  getProjects,
+  getProject,
+  createMedia
+}

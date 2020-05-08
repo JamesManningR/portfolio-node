@@ -1,7 +1,9 @@
 const express = require('express'),
-      bodyParser = require('body-parser'),
-      db = require('./mongoose');
+      bodyParser = require('body-parser');
 
+// Routes
+const projectsRoute = require("./routes/projects");
+      
 const app = express();
 
 const PORT = process.env.PORT;
@@ -10,6 +12,6 @@ const PORT = process.env.PORT;
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.post('/projects', db.createProject);
+app.use("/projects", projectsRoute);
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
