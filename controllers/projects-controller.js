@@ -17,7 +17,19 @@ const createProject = async (req, res, next) => {
 // READ
 // All projects
 const getProjects = async (req, res, next) =>{
-  const projects = await Project.find().exec()
+  let projects
+  try{
+    projects = await Project.find().exec()
+  } catch(err){
+    console.log("Error getting projects: ", err);
+    const error = new HttpError(
+      'We were unable to gather projects.', 500
+    );
+    return next(error)
+  }
+  if (!projects){
+    throw new HttpError('No projects found', 404);
+  }
   res.json(projects)
 }
 
@@ -32,6 +44,7 @@ const getProject = async (req, res, next) =>{
       .exec()
   } catch (err) {
     // If there was an error
+    console.log("Error getting project: ", err);
     const error = new HttpError(
       'We were unable to find this project.', 500
     );
@@ -41,7 +54,6 @@ const getProject = async (req, res, next) =>{
   if (!project){
     throw new HttpError(`Could not find project with Id ${projectId}`, 404);
   }
-
   res.json(project)
 }
 
