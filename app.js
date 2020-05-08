@@ -1,5 +1,7 @@
 const express = require('express'),
-      bodyParser = require('body-parser');
+      bodyParser = require('body-parser'),
+      mongoose = require('mongoose');
+
 
 // Routes
 const projectsRoute = require("./routes/projects");
@@ -14,4 +16,13 @@ app.use(bodyParser.json())
 
 app.use("/projects", projectsRoute);
 
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+// Init db
+mongoose
+  .connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('Connection to database successful')
+    app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+  })
+  .catch((err) => {
+    console.log(`Connection failed: ${err}`)
+});
