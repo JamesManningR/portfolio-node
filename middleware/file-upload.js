@@ -1,6 +1,7 @@
 const multer = require("multer"),
   crypto = require("crypto"),
-  fs = require("fs");
+  fs = require("fs"),
+  path = require("path");
 
 // Generate unique file name
 function generateUniqueFileName(fileName, ext) {

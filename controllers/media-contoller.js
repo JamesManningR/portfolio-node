@@ -4,9 +4,11 @@ const Media = require('../models/media'),
 // Create
 const createMedia = async (req, res, next) => {
   const createdMedia = new Media({
-    src: req.body.url,
-    alt: req.body.alt
+    src: req.file.path,
+    alt: null
   })
+  const result = await createdMedia.save()
+  res.json(result)
 }
 
 // Read
