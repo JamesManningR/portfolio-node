@@ -1,0 +1,54 @@
+const multer = require("multer"),
+  crypto = require("crypto"),
+  fs = require("fs");
+
+// Generate unique file name
+function generateUniqueFileName(fileName, ext) {
+  let generated = `${fileName}-${crypto
+    .pseudoRandomBytes(8)
+    .toString("hex")}${ext}`;
+  // Prevent any repeated file names
+  while (fs.existsSync("./public/uploads" + generated)) {
+    generated = `${fileName}-${crypto
+      .pseudoRandomBytes(8)
+      .toString("hex")}${ext}`;
+  }
+  return generated;
+}
+const storage = multer.diskStorage({
+  destination: "../public/uploads/",
+  filename(req, file, cb) {
+    cb(
+      null,
+      generateUniqueFileName(file.fieldname, path.extname(file.originalname))
+    );
+  },
+});
+
+//Check File Type
+function checkFileType(file, cb) {
+  //Allowed types
+  const fileTypes = /jpeg|jpg|png/;
+  // Check extension
+  const extNameAllowed = path.extname(file.originalname);
+  //Check Mime
+  const mimetypeAllowed = fileTypes.test(file.mimetype);
+
+  if (mimetypeAllowed && extNameAllowed) {
+    return cb(null, true);
+  } else {
+    cb("Error: Incorrect type");
+  }
+}
+
+upload = multer({
+  storage,
+  limits: {
+    fileSize: 1000000,
+  },
+  fileFilter: (req, file, cb) => {
+    checkFileType(file, cb);
+  },
+});
+
+module.exports = upload;

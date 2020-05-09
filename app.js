@@ -4,7 +4,8 @@ const express = require('express'),
 
 
 // Routes
-const projectsRoute = require("./routes/projects");
+const projectsRoute = require("./routes/projects"),
+      mediaRoute = require("./routes/media");
       
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.use("/projects", projectsRoute);
+app.use("/media", mediaRoute);
 
 // Init db
 mongoose
