@@ -28,7 +28,7 @@ const getAllMedia = async (req, res, next) =>{
   res.json(media)
 }
 
-// Single project
+// Single 
 const getMediaById = async (req, res, next) =>{
   const mediaId = req.params.id
   let media
