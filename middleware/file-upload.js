@@ -3,13 +3,15 @@ const multer = require("multer"),
   fs = require("fs"),
   path = require("path");
 
+const UPLOAD_PATH = "./uploads";
+
 // Generate unique file name
 function generateUniqueFileName(fileName, ext) {
   let generated = `${fileName}-${crypto
     .pseudoRandomBytes(8)
     .toString("hex")}${ext}`;
   // Prevent any repeated file names
-  while (fs.existsSync("./public/uploads" + generated)) {
+  while (fs.existsSync(UPLOAD_PATH + generated)) {
     generated = `${fileName}-${crypto
       .pseudoRandomBytes(8)
       .toString("hex")}${ext}`;
@@ -17,7 +19,7 @@ function generateUniqueFileName(fileName, ext) {
   return generated;
 }
 const storage = multer.diskStorage({
-  destination: "../public/uploads/",
+  destination: UPLOAD_PATH,
   filename(req, file, cb) {
     cb(
       null,
