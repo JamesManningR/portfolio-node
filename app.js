@@ -3,10 +3,6 @@ const express = require("express"),
   mongoose = require("mongoose"),
   path = require('path');
 
-// Routes
-const projectsRoute = require("./routes/projects"),
-  mediaRoute = require("./routes/media");
-
 const app = express();
 
 const PORT = process.env.PORT;
@@ -33,11 +29,17 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, '/public')))
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
+// Route files
+const projectsRoute = require("./routes/projects"),
+      mediaRoute = require("./routes/media"),
+      authRoute = require("./routes/auth");
+
 // Routes
+app.use("/", authRoute);
 app.use("/projects", projectsRoute);
 app.use("/media", mediaRoute);
 
-// Init db
+// Init db connection and server
 mongoose
   .connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
