@@ -4,7 +4,7 @@ const Media = require('../models/media'),
 // Create
 const createMedia = async (req, res, next) => {
   const createdMedia = new Media({
-    src: req.file.path,
+    src: req.protocol + "://" + req.hostname + '/' + req.file.path,
     alt: null
   })
   const result = await createdMedia.save()
@@ -15,7 +15,7 @@ const createMedia = async (req, res, next) => {
 const getAllMedia = async (req, res, next) =>{
   let media
   try{
-    media = await Media.findById().exec()
+    media = await Media.find().exec()
   } catch(err){
     console.log("Error getting media: ", err)
     const error = new HttpError(
@@ -24,7 +24,8 @@ const getAllMedia = async (req, res, next) =>{
     return next(error)
   }
   if (!media){
-    throw new HttpError('No media found', 404)
+    const error = new HttpError('No media found', 404);
+    return next(error);
   }
   res.json(media)
 }
@@ -45,7 +46,8 @@ const getMediaById = async (req, res, next) =>{
   }
   // If there was no media found
   if (!media){
-    throw new HttpError(`Could not find media with Id ${mediaId}`, 404)
+    const error = new HttpError('No media found', 404);
+    return next(error);
   }
   res.json(media)
 }

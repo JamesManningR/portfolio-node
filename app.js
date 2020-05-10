@@ -1,6 +1,7 @@
 const express = require("express"),
   bodyParser = require("body-parser"),
-  mongoose = require("mongoose");
+  mongoose = require("mongoose"),
+  path = require('path');
 
 // Routes
 const projectsRoute = require("./routes/projects"),
@@ -9,6 +10,9 @@ const projectsRoute = require("./routes/projects"),
 const app = express();
 
 const PORT = process.env.PORT;
+
+// Make public folder statically hosted
+app.use(express.static('public'))
 
 // parse body
 app.use(bodyParser.urlencoded({ extended: false }));
