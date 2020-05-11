@@ -10,7 +10,7 @@ const createProject = async (req, res, next) => {
     featuredImage: req.body.featuredImage,
     images: req.body.images,
     skills: req.body.skills
-  });
+  })
   const result = await createdProject.save()
   res.json(result)
 }
@@ -28,7 +28,7 @@ const getProjects = async (req, res, next) =>{
     console.log("Error getting projects: ", err)
     const error = new HttpError(
       'We were unable to gather projects.', 500
-    );
+    )
     return next(error)
   }
   if (!projects){
@@ -51,7 +51,7 @@ const getProject = async (req, res, next) =>{
     console.log("Error getting project: ", err)
     const error = new HttpError(
       'We were unable to find this project.', 500
-    );
+    )
     return next(error)
   }
   // If there was no project found

@@ -20,11 +20,11 @@ const getAllMedia = async (req, res, next) =>{
     console.log("Error getting media: ", err)
     const error = new HttpError(
       'We were unable to gather media.', 500
-    );
+    )
     return next(error)
   }
   if (!media){
-    const error = new HttpError('No media found', 404);
+    const error = new HttpError('No media found', 404)
     return next(error);
   }
   res.json(media)
@@ -41,13 +41,13 @@ const getMediaById = async (req, res, next) =>{
     console.log("Error getting media: ", err)
     const error = new HttpError(
       'We were unable to find this media.', 500
-    );
+    )
     return next(error)
   }
   // If there was no media found
   if (!media){
-    const error = new HttpError('No media found', 404);
-    return next(error);
+    const error = new HttpError('No media found', 404)
+    return next(error)
   }
   res.json(media)
 }

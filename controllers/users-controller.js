@@ -1,7 +1,7 @@
 const User = require('../models/user'),
       HttpError = require('../models/http-error'),
       webToken = require('jsonwebtoken'),
-      bcrypt = require('bcryptjs');
+      bcrypt = require('bcryptjs')
 
 function generateToken(userdata){
   let token
@@ -24,9 +24,9 @@ function generateToken(userdata){
 const createUser = async (req, res, next) =>{
   const { name, password } = req.body;
 
-  let existingUser;
+  let existingUser
   try{
-    existingUser = await User.findOne({ name });
+    existingUser = await User.findOne({ name })
   } catch (err){
     const error = new HttpError(
       'Sign up failed, please try again later',
@@ -43,7 +43,7 @@ const createUser = async (req, res, next) =>{
     return next(error);
   }
 
-  let hashedPass;
+  let hashedPass
   try{
     hashedPass = await bcrypt.hash(password, 12);
   } catch(err){
@@ -71,11 +71,11 @@ const createUser = async (req, res, next) =>{
 
   token = generateToken(createdUser)
 
-  res.status(201).json({ userId: createdUser.id, name: createdUser.email, token });
+  res.status(201).json({ userId: createdUser.id, name: createdUser.email, token })
 }
 
 const loginUser = async(req, res, next) => {
-  const { name, password } = req.body;
+  const { name, password } = req.body
 
   let existingUser;
   try{
@@ -96,9 +96,9 @@ const loginUser = async(req, res, next) => {
     return next(error)
   }
 
-  let passwordCorrect = false;
+  let passwordCorrect = false
   try{
-    passwordCorrect = await bcrypt.compare(password, existingUser.password);
+    passwordCorrect = await bcrypt.compare(password, existingUser.password)
   } catch(err) {
     const error = new HttpError(
       'Could not log in, please check credentials and try again',
