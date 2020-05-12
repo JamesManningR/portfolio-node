@@ -22,11 +22,11 @@ function generateToken(userdata){
 }
 
 const createUser = async (req, res, next) =>{
-  const { name, password } = req.body;
+  const { username, password } = req.body;
 
   let existingUser
   try{
-    existingUser = await User.findOne({ name })
+    existingUser = await User.findOne({ username })
   } catch (err){
     const error = new HttpError(
       'Sign up failed, please try again later',
@@ -55,7 +55,7 @@ const createUser = async (req, res, next) =>{
   }
 
   const createdUser = new User({
-    name,
+    username,
     password: hashedPass
   })
 
@@ -71,15 +71,19 @@ const createUser = async (req, res, next) =>{
 
   token = generateToken(createdUser)
 
-  res.status(201).json({ userId: createdUser.id, name: createdUser.email, token })
+  res.status(201).json({ 
+    userId: createdUser.id,
+    username: createdUser.username,
+    token
+  })
 }
 
 const loginUser = async(req, res, next) => {
-  const { name, password } = req.body
+  const { username, password } = req.body
 
   let existingUser;
   try{
-    existingUser = await User.findOne({ name })
+    existingUser = await User.findOne({ username })
   } catch(err) {
     const error = new HttpError(
       'Login Failed, please try again',
@@ -119,7 +123,7 @@ const loginUser = async(req, res, next) => {
 
   res.json({
     userId: existingUser.id,
-    name: existingUser.name,
+    username: existingUser.username,
     token: token
   })
 }
