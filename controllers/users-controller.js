@@ -9,8 +9,8 @@ function generateToken(userdata){
     token = webToken.sign(
       { userId: userdata.id, name: userdata.name },
       process.env.SECRET_KEY,
-      { expiresIn: '3h' }
-    )
+      { expiresIn: '2h' }
+    ) 
   } catch(err) {
     const error = new HttpError(
       'Signup failed, please try again',
@@ -18,7 +18,9 @@ function generateToken(userdata){
     )
     return next(error)
   }
-  return token
+  let expiry = new Date();
+  expiry.setHours( expiry.getHours() + 2);
+  return { token, expiry}
 }
 
 const createUser = async (req, res, next) =>{
@@ -69,12 +71,13 @@ const createUser = async (req, res, next) =>{
     return next(error)
   }
 
-  token = generateToken(createdUser)
+  authToken = generateToken(createdUser)
 
   res.status(201).json({ 
     userId: createdUser.id,
     username: createdUser.username,
-    token
+    token: authToken.token,
+    tokenExpiry: authToken.expiry
   })
 }
 
@@ -119,12 +122,13 @@ const loginUser = async(req, res, next) => {
     return next(error)
   }
 
-  token = await generateToken(existingUser)
+  authToken = await generateToken(existingUser);
 
   res.json({
     userId: existingUser.id,
     username: existingUser.username,
-    token: token
+    token: authToken.token,
+    tokenExpiry: authToken.expiry
   })
 }
 
