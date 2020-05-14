@@ -39,6 +39,17 @@ app.use("/", authRoute)
 app.use("/projects", projectsRoute)
 app.use("/media", mediaRoute)
 
+app.use(function(error, req, res, next) {
+  // Any request to this server will get here, and will send an HTTP
+  res.status(error.code)
+  res.json({ error });
+});
+
+app.use((req, res, next) => {
+  const error = new HttpError('Could not find this route.', 404);
+  throw error;
+});
+
 // Init db connection and server
 mongoose
   .connect(process.env.MONGO_URL, {
