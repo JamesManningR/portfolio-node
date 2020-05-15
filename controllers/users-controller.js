@@ -18,7 +18,7 @@ function generateToken(userdata){
     )
     return next(error)
   }
-  let expiry = new Date();
+  const expiry = new Date();
   expiry.setHours( expiry.getHours() + 2);
   return { token, expiry}
 }

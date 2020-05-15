@@ -35,16 +35,32 @@ const getMediaById = async (req, res, next) =>{
   const mediaId = req.params.id
   let media
   try{
-    media = await media.findById(mediaId).exec()
+    media = await Media.findById(mediaId).exec()
   } catch (err) {
-    // If there was an error
-    console.log("Error getting media: ", err)
     const error = new HttpError(
       'We were unable to find this media.', 500
     )
     return next(error)
   }
   // If there was no media found
+  if (!media){
+    const error = new HttpError('No media found', 404)
+    return next(error)
+  }
+  res.json(media)
+}
+
+const updateMedia = async (req, res, next ) =>{
+  const mediaId = req.params.id
+  let media
+  try {
+    media = await Media.findByIdAndUpdate(mediaId);
+  } catch (err) {
+    const error = new HttpError(
+      'Unable to update media', 500
+    )
+    return next(error)
+  }
   if (!media){
     const error = new HttpError('No media found', 404)
     return next(error)

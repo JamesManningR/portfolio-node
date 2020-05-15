@@ -48,7 +48,6 @@ const getProject = async (req, res, next) =>{
       .exec()
   } catch (err) {
     // If there was an error
-    console.log("Error getting project: ", err)
     const error = new HttpError(
       'We were unable to find this project.', 500
     )
@@ -61,8 +60,36 @@ const getProject = async (req, res, next) =>{
   res.json(project)
 }
 
+const updateProject = async (req, res, next) => {
+  const updateProject = new Project({
+    title: req.body.title,
+    body: req.body.body,
+    color: req.body.color,
+    featuredImage: req.body.featuredImage,
+    images: req.body.images,
+    skills: req.body.skills
+  })
+  try{
+    result = await Project.findOneAndUpdate(req.params.id, updateProject)
+  } catch(err) {
+    const error = new HttpError(
+      'We were unable to update this project.', 500
+    )
+    return next(error)
+  }
+  res.json(result)
+}
+
+const deleteProject = async (req, res, next) => {
+  const projectId = req.params.id
+  result = await Project.findByIdAndDelete(projectId)
+  res.json(result)
+}
+
 module.exports = {
   createProject,
   getProjects,
-  getProject
+  getProject,
+  updateProject,
+  deleteProject
 }
