@@ -4,13 +4,13 @@ const Project = require('../models/project'),
 // Create
 const createProject = async (req, res, next) => {
   const createdProject = new Project({
-    title: req.body.title,
-    body: req.body.body,
-    color: req.body.color,
-    featuredImage: req.body.featuredImage,
-    images: req.body.images,
-    skills: req.body.skills
-  })
+    title,
+    body,
+    color,
+    featuredImage,
+    images,
+    skills
+  } = req.body)
   const result = await createdProject.save()
   res.json(result)
 }
@@ -32,7 +32,8 @@ const getProjects = async (req, res, next) =>{
     return next(error)
   }
   if (!projects){
-    throw new HttpError('No projects found', 404)
+    const error = new HttpError(`No projects Found`, 404)
+    return next(error)
   }
   res.json(projects)
 }
@@ -55,20 +56,21 @@ const getProject = async (req, res, next) =>{
   }
   // If there was no project found
   if (!project){
-    throw new HttpError(`Could not find project with Id ${projectId}`, 404)
+    const error = new HttpError(`Could not find project with Id ${projectId}`, 404)
+    return next(error)
   }
   res.json(project)
 }
 
 const updateProject = async (req, res, next) => {
   const updateProject = new Project({
-    title: req.body.title,
-    body: req.body.body,
-    color: req.body.color,
-    featuredImage: req.body.featuredImage,
-    images: req.body.images,
-    skills: req.body.skills
-  })
+    title,
+    body,
+    color,
+    featuredImage,
+    images,
+    skills
+  } = req.body)
   try{
     result = await Project.findOneAndUpdate(req.params.id, updateProject)
   } catch(err) {
@@ -82,7 +84,20 @@ const updateProject = async (req, res, next) => {
 
 const deleteProject = async (req, res, next) => {
   const projectId = req.params.id
-  result = await Project.findByIdAndDelete(projectId)
+  try{
+    const result = await Project.findByIdAndDelete(projectId)
+  } catch (err) {
+    const error = new HttpError(
+      'We were unable to delete this project', 500
+    )
+    return next(error);
+  }
+  if (!result){
+    const error = new HttpError(
+      'Could not find project with ID', 404
+    )
+    return next(error);
+  }
   res.json(result)
 }
 
