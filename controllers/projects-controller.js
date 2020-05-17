@@ -4,14 +4,20 @@ const Project = require('../models/project'),
 // Create
 const createProject = async (req, res, next) => {
   const createdProject = new Project({
-    title,
-    body,
-    color,
-    featuredImage,
-    images,
-    skills
-  } = req.body)
-  const result = await createdProject.save()
+    title: req.body.title,
+    body: req.body.body,
+    color: req.body.color,
+    featuredImage: req.body.featuredImage,
+    images: req.body.images,
+    skills: req.body.skills
+  })
+  try{
+    const result = await createdProject.save()
+  } catch(err){
+    console.log(err)
+    const error = new HttpError('Could not create project', 500)
+    return next(error)
+  } 
   res.json(result)
 }
 
@@ -63,17 +69,10 @@ const getProject = async (req, res, next) =>{
 }
 
 const updateProject = async (req, res, next) => {
-  const updateProject = new Project({
-    title,
-    body,
-    color,
-    featuredImage,
-    images,
-    skills
-  } = req.body)
   try{
-    result = await Project.findOneAndUpdate(req.params.id, updateProject)
+    result = await Project.findByIdAndUpdate(req.params.id, req.body, {new: true})
   } catch(err) {
+    console.log(err)
     const error = new HttpError(
       'We were unable to update this project.', 500
     )

@@ -41,6 +41,7 @@ app.use("/media", mediaRoute)
 
 app.use(function(error, req, res, next) {
   // Any request to this server will get here, and will send an HTTP
+  console.log(error)
   res.status(error.code)
   res.json({ error });
 });
@@ -49,6 +50,8 @@ app.use((req, res, next) => {
   const error = new HttpError('Could not find this route.', 404);
   throw error;
 });
+
+mongoose.set('useFindAndModify', false);
 
 // Init db connection and server
 mongoose
