@@ -4,15 +4,16 @@ const Project = require('../models/project'),
 // Create
 const createProject = async (req, res, next) => {
   const createdProject = new Project({
-    title: req.body.title,
-    body: req.body.body,
-    color: req.body.color,
-    featuredImage: req.body.featuredImage,
-    images: req.body.images,
-    skills: req.body.skills
-  })
+    title,
+    body,
+    color,
+    featuredImage,
+    images,
+    skills
+  } = req.body)
+  let result
   try{
-    const result = await createdProject.save()
+    result = await createdProject.save()
   } catch(err){
     console.log(err)
     const error = new HttpError('Could not create project', 500)
@@ -83,8 +84,9 @@ const updateProject = async (req, res, next) => {
 
 const deleteProject = async (req, res, next) => {
   const projectId = req.params.id
+  let result
   try{
-    const result = await Project.findByIdAndDelete(projectId)
+    result = await Project.findByIdAndDelete(projectId)
   } catch (err) {
     const error = new HttpError(
       'We were unable to delete this project', 500
