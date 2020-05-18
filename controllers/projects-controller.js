@@ -9,7 +9,8 @@ const createProject = async (req, res, next) => {
     color,
     featuredImage,
     images,
-    skills
+    skills,
+    links
   } = req.body)
   let result
   try{

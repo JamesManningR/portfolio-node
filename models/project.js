@@ -6,7 +6,8 @@ const projectSchema = new mongoose.Schema({
   featuredImage: { type : mongoose.Types.ObjectId, ref: 'Media' },
   color: { type: String },
   images: [{ type : mongoose.Types.ObjectId, ref: 'Media' }],
-  skills: { type: Array }
+  skills: { type: Array },
+  links: {type: Array}
 })
 
 module.exports = mongoose.model('Project', projectSchema)
