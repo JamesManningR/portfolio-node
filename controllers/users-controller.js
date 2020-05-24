@@ -25,6 +25,7 @@ function generateToken(userdata){
 
 const createUser = async (req, res, next) =>{
   const { username, password } = req.body;
+  const role = 'guest';
 
   let existingUser
   try{
@@ -58,7 +59,8 @@ const createUser = async (req, res, next) =>{
 
   const createdUser = new User({
     username,
-    password: hashedPass
+    password: hashedPass,
+    role
   })
 
   try {
