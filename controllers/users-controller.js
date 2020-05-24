@@ -78,6 +78,7 @@ const createUser = async (req, res, next) =>{
   res.status(201).json({ 
     userId: createdUser.id,
     username: createdUser.username,
+    userRole: createdUser.role,
     token: authToken.token,
     tokenExpiry: authToken.expiry
   })
@@ -129,6 +130,7 @@ const loginUser = async(req, res, next) => {
   res.json({
     userId: existingUser.id,
     username: existingUser.username,
+    userRole: existingUser.role,
     token: authToken.token,
     tokenExpiry: authToken.expiry
   })

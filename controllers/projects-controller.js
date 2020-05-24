@@ -20,7 +20,7 @@ const createProject = async (req, res, next) => {
     const error = new HttpError('Could not create project', 500)
     return next(error)
   } 
-  res.json(result)
+  res.status(201).json(result)
 }
 
 // READ
