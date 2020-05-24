@@ -4,13 +4,13 @@ const project = require('../controllers/projects-controller'),
       router = express.Router()
 
 // Create
-router.post('/', auth.checkLoggedIn, auth.authRole('admin'), project.createProject)
+router.post('/', auth.authAdmin, project.createProject)
 //Read
 router.get('/', project.getProjects)
 router.get('/:id', project.getProject)
 // Update
-router.put('/:id', auth.checkLoggedIn, auth.authRole('admin'), project.updateProject)
+router.put('/:id', auth.authAdmin, project.updateProject)
 // Delete
-router.delete('/:id', auth.checkLoggedIn, auth.authRole('admin'), project.deleteProject)
+router.delete('/:id', auth.authAdmin, project.deleteProject)
 
 module.exports = router

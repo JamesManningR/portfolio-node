@@ -1,7 +1,8 @@
 const express = require("express"),
   bodyParser = require("body-parser"),
   mongoose = require("mongoose"),
-  path = require('path')
+  path = require('path'),
+  HttpError = require('./models/http-error')
 
 const app = express()
 
@@ -39,15 +40,13 @@ app.use("/", authRoute)
 app.use("/projects", projectsRoute)
 app.use("/media", mediaRoute)
 
-app.use(function(error, req, res, next) {
+app.use((err, req, res, next) => {
   // Any request to this server will get here, and will send an HTTP
-  console.log(error)
-  res.status(error.code).json({message: error.message, code: error.code})
-});
-
-app.use((req, res, next) => {
-  const error = new HttpError('Could not find this route.', 404);
-  throw error;
+  res.status(err.code || 500).json({
+    message: err.message || 'Something went wrong',
+    code: err.code || 500
+  })
+  return next()
 });
 
 mongoose.set('useFindAndModify', false);

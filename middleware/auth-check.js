@@ -1,7 +1,8 @@
 const HttpError = require('../models/http-error'),
+      User = require('../models/user'),
       jwt = require('jsonwebtoken')
 
-function checkLoggedIn(req, res, next) {
+const checkLoggedIn = (req, res, next) => {
   try {
     const token = req.headers.authorization // Get token string
     if (!token){
@@ -17,17 +18,31 @@ function checkLoggedIn(req, res, next) {
   }
 }
 
-function authRole(req, res, next, role) {
-  return (req, res, next) => {
-    if (req.user.role !== role) {
-      const error = new HttpError('Authentication failed', 401)
-      next( error )
+const authAdmin = async (req, res, next) => {
+  // TODO: Try to use the previous is logged in logic to reduce this code footprint
+  try {
+    // Check if user is logged in
+    const token = req.headers.authorization // Get token string
+    if (!token){
+      const error = new HttpError('No Auth token Found', 401)
+      return next(error)
     }
-    next()
+    const decoded = jwt.verify(token, process.env.SECRET_KEY)
+    req.userData = { userId: decoded.userId }
+    // If they are logged in, check if the user has the role of 'admin' 
+    const foundUser = await User.findOne({ _id: decoded.userId });
+    if (foundUser.role != 'admin'){
+      const error = new HttpError('User does not have permissions to do that', 401)
+      return next(error)
+    }
+  } catch(err) {
+    const error = new HttpError('Authentication failed', 401)
+    return next(error)
   }
+  return next();
 }
 
 module.exports = {
   checkLoggedIn,
-  authRole
+  authAdmin
 }
