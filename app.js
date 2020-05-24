@@ -41,8 +41,8 @@ app.use("/media", mediaRoute)
 
 app.use(function(error, req, res, next) {
   // Any request to this server will get here, and will send an HTTP
-  res.status(error.code)
-  res.json({ error });
+  console.log(error)
+  res.status(error.code).json({message: error.message, code: error.code})
 });
 
 app.use((req, res, next) => {
