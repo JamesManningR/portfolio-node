@@ -19,7 +19,7 @@ const checkLoggedIn = (req, res, next) => {
 }
 
 const authAdmin = async (req, res, next) => {
-  // TODO: Try to use the previous is logged in logic to reduce this code footprint
+  // TODO: Try to use the checkLoggedIn logic to reduce this code footprint
   try {
     // Check if user is logged in
     const token = req.headers.authorization // Get token string

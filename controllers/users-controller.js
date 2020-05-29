@@ -9,7 +9,7 @@ function generateToken(userdata){
     token = webToken.sign(
       { userId: userdata.id, name: userdata.name },
       process.env.SECRET_KEY,
-      { expiresIn: '2h' }
+      { expiresIn: '15s' }
     ) 
   } catch(err) {
     const error = new HttpError(
@@ -18,9 +18,10 @@ function generateToken(userdata){
     )
     return next(error)
   }
-  const expiry = new Date();
-  expiry.setHours( expiry.getHours() + 2);
-  return { token, expiry}
+  const expiryDate = new Date();
+  expiryDate.setSeconds( expiryDate.getSeconds() + 15);
+  const expiry = expiryDate.getTime();
+  return { token, expiry }
 }
 
 const createUser = async (req, res, next) =>{
