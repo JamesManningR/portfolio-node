@@ -27,9 +27,10 @@ const createProject = async (req, res, next) => {
 // READ
 // All projects
 const getProjects = async (req, res, next) =>{
+  const params = req.query;
   let projects
   try{
-    projects = await Project.find()
+    projects = await Project.find(params)
       .populate('featuredImage')
       .populate('images')
       .exec()
