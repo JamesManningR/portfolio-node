@@ -6,7 +6,6 @@ const createProject = async (req, res, next) => {
   const createdProject = new Project({
     title,
     body,
-    color,
     featuredImage,
     images,
     skills,
