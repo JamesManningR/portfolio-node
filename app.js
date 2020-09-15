@@ -37,6 +37,7 @@ const projectsRoute = require("./routes/projects"),
 // Routes
 app.use("/", authRoute)
 app.use("/projects", projectsRoute)
+app.use("/blog-posts", mediaRoute)
 app.use("/media", mediaRoute)
 
 app.use((err, req, res, next) => {
@@ -48,7 +49,7 @@ app.use((err, req, res, next) => {
   return next()
 });
 
-mongoose.set('useFindAndModify', false);
+mongoose.set('useFindAndModify', false)
 
 // Init db connection and server
 mongoose
