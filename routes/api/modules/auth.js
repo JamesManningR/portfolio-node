@@ -1,8 +1,9 @@
-const express = require('express'),
-      router = express.Router(),
-      user = require(__basedir + '/controllers/users-controller')
+const express = require("express");
 
-router.post("/login", user.loginUser)
-router.post("/register", user.createUser)
+const router = express.Router();
+const user = require(`${__basedir}/controllers/users-controller`);
 
-module.exports = router
+router.post("/login", user.loginUser);
+router.post("/register", user.createUser);
+
+module.exports = router;

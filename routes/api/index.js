@@ -1,14 +1,15 @@
-const express = require('express'),
-      router = express.Router()
+const express = require("express");
 
-const projectsRoute = require("./modules/projects"),
-      mediaRoute = require("./modules/media"),
-      blogRoute = require("./modules/auth"),
-      authRoute = require("./modules/auth")
+const router = express.Router();
 
-router.use("/auth", authRoute)
-router.use("/projects", projectsRoute)
-router.use("/blog-posts", blogRoute)
-router.use("/media", mediaRoute)
+const projectsRoute = require("./modules/projects");
+const mediaRoute = require("./modules/media");
+const blogRoute = require("./modules/auth");
+const authRoute = require("./modules/auth");
 
-module.exports = router
+router.use("/auth", authRoute);
+router.use("/projects", projectsRoute);
+router.use("/blog-posts", blogRoute);
+router.use("/media", mediaRoute);
+
+module.exports = router;

@@ -1,13 +1,13 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const mediaSchema = new mongoose.Schema({
   username: { type: String, required: true },
   password: { type: String },
-  role: { 
+  role: {
     type: String,
-    default: 'guest',
-    enum: ['admin', 'guest']
-  }
-})
+    default: "guest",
+    enum: ["admin", "guest"],
+  },
+});
 
-module.exports = mongoose.model('User', mediaSchema)
+module.exports = mongoose.model("User", mediaSchema);
