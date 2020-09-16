@@ -1,6 +1,6 @@
-const project = require('../controllers/blog-post-controller'),
+const project = require(__basedir + '/controllers/blog-post-controller'),
       express = require('express'),
-      auth = require('../middleware/auth-check'),
+      auth = require(__basedir + '/middleware/auth-check'),
       router = express.Router()
 
 // Create

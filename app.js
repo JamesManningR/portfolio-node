@@ -1,17 +1,23 @@
+// Used for easy access to root dir (makes modules a lot easier to refactor)
+// 0 - Utilities
+global.__basedir = __dirname;
+
+// 1 - Get dependencies
 const express = require("express"),
   bodyParser = require("body-parser"),
   mongoose = require("mongoose"),
   path = require('path')
 
+// 2 - Create App
 const app = express()
-
 const PORT = process.env.PORT
 
-// parse body
+// 3 - App Options
+// -- Parse body
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-// Allow CORS
+// -- Allow CORS
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -25,21 +31,17 @@ app.use((req, res, next) => {
   next()
 })
 
-// Make public folder statically hosted
+// -- Public folder static hosting
 app.use(express.static(path.join(__dirname, '/public')))
+// -- Uploads folder static hosting
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
-// Route files
-const projectsRoute = require("./routes/projects"),
-      mediaRoute = require("./routes/media"),
-      authRoute = require("./routes/auth")
+// 4 - Routes 
+// -- Route File
+const routes = require("./routes")
+app.use(routes)
 
-// Routes
-app.use("/", authRoute)
-app.use("/projects", projectsRoute)
-app.use("/blog-posts", mediaRoute)
-app.use("/media", mediaRoute)
-
+// -- Fallback Route
 app.use((err, req, res, next) => {
   // Any request to this server will get here, and will send an HTTP
   res.status(err.code || 500).json({
@@ -49,9 +51,11 @@ app.use((err, req, res, next) => {
   return next()
 });
 
+// 5 - Mongoose/MongoDb options
 mongoose.set('useFindAndModify', false)
 
-// Init db connection and server
+// 6 - Init
+// -- db connection and server
 mongoose
   .connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
