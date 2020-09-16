@@ -39,7 +39,7 @@ function checkFileType(file, cb) {
   cb("Error: Incorrect type");
 }
 
-upload = multer({
+const upload = multer({
   storage,
   limits: {
     fileSize: 1000000,

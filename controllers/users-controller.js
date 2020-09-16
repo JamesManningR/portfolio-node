@@ -13,7 +13,7 @@ function generateToken(userdata) {
     );
   } catch (err) {
     const error = new HttpError("Signup failed, please try again", 500);
-    return next(error);
+    return error;
   }
   const expiryDate = new Date();
   expiryDate.setMinutes(expiryDate.getMinutes() + 30);
@@ -59,7 +59,7 @@ const createUser = async (req, res, next) => {
     return next(error);
   }
 
-  authToken = generateToken(createdUser);
+  const authToken = generateToken(createdUser);
 
   res.status(201).json({
     userId: createdUser.id,
@@ -108,7 +108,7 @@ const loginUser = async (req, res, next) => {
     return next(error);
   }
 
-  authToken = await generateToken(existingUser);
+  const authToken = await generateToken(existingUser);
 
   res.json({
     userId: existingUser.id,

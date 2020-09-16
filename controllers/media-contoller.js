@@ -11,7 +11,7 @@ const createMedia = async (req, res, next) => {
   try {
     result = await createdMedia.save();
   } catch (err) {
-    return next(error);
+    return next(err);
   }
   res.json(result);
 };

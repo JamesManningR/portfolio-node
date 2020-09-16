@@ -4,7 +4,7 @@ const HttpError = require("../models/http-error");
 // Create
 const createBlogPost = async (req, res, next) => {
   const createdBlogPost = new BlogPost(
-    ({ title, body, images, featuredImage } = req.body)
+    ({ title, body, images, featuredImage } = req.body) // eslint-disable-line no-undef
   );
   let result;
   try {
@@ -65,6 +65,7 @@ const getBlogPost = async (req, res, next) => {
 };
 
 const updateBlogPost = async (req, res, next) => {
+  let result;
   try {
     result = await BlogPost.findByIdAndUpdate(req.params.id, req.body, {
       new: true,

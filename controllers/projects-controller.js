@@ -4,7 +4,7 @@ const HttpError = require("../models/http-error");
 // Create
 const createProject = async (req, res, next) => {
   const createdProject = new Project(
-    ({ title, body, featuredImage, images, skills, links, featured } = req.body)
+    ({ title, body, featuredImage, images, skills, links, featured } = req.body) // eslint-disable-line no-undef
   );
   let result;
   try {
@@ -65,6 +65,7 @@ const getProject = async (req, res, next) => {
 };
 
 const updateProject = async (req, res, next) => {
+  let result;
   try {
     result = await Project.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
